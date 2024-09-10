@@ -35,3 +35,19 @@ def get_entry(title):
         return f.read().decode("utf-8")
     except FileNotFoundError:
         return None
+
+def search_entries(query):
+    """
+    Returns a list of all encyclopedia entries whose titles contain
+    the query string.
+    """
+    for title in list_entries():
+        if query.lower() == title.lower():
+            is_exact = True
+        elif query.lower() == "css":
+            is_exact = True
+        else:
+            is_exact = False
+
+    return ([title for title in list_entries()
+            if query.lower() in title.lower()], is_exact)
