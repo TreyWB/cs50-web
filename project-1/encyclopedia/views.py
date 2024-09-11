@@ -50,3 +50,6 @@ def search(request):
             "query": query,
             "entries": entries
         })
+
+def create(request):
+    return render(request, "encyclopedia/create.html")
