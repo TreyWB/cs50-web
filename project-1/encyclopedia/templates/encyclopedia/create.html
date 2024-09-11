@@ -27,7 +27,7 @@
         padding: 1px 6px;
         border: 1px outset buttonborder;
         border-radius: 6px;
-        color: buttoncolor;
+        color: buttontext;
         text-decoration: none;
         float: right;
         margin-right: 1.6%;
@@ -55,10 +55,10 @@
     }
     </style>
 
-
     <div id="editor">
 
         <form action="{% url 'create' %}" method="post">
+            {% csrf_token %}
             <input type="text" name="title" id="title-field", placeholder="Title">
             <input type="submit", id="submit-button", value="Create Entry">
             <a href="{% url 'index' %}" id="cancel-button">Cancel</a>

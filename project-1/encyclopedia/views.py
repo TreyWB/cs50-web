@@ -52,4 +52,26 @@ def search(request):
         })
 
 def create(request):
-    return render(request, "encyclopedia/create.html")
+    if request.method == "GET":
+        return render(request, "encyclopedia/create.html")
+
+    if request.method == "POST":
+        title = request.POST["title"]
+        content = request.POST["content"]
+
+        if title == "":
+            return render(request, "encyclopedia/error.html", {
+                "message": "Please enter a title for your new entry."
+            })
+        elif content == "":
+            return render(request, "encyclopedia/error.html", {
+                "message": "Please enter a description for your new entry."
+            })
+        elif title.lower().capitalize() in util.list_entries():
+            return render(request, "encyclopedia/error.html", {
+                "message": "An entry with this title already exists."
+            })
+
+        util.create_entry(title, content)
+
+        return redirect("/wiki/" + title)

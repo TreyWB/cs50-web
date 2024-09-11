@@ -51,3 +51,12 @@ def search_entries(query):
 
     return ([title for title in list_entries()
             if query.lower() in title.lower()], is_exact)
+
+def create_entry(title, content):
+    """
+    Creates a new encyclopedia entry, given its title and Markdown
+    content.
+    """
+    content = f"# {title}\n\n{content}"
+
+    save_entry(title, content)
