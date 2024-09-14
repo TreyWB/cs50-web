@@ -6,23 +6,24 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
         <link href="{% static 'encyclopedia/styles.css' %}" rel="stylesheet">
     </head>
     <body>
         <div class="row">
             <div class="sidebar col-lg-2 col-md-3">
-                <h2>Wiki</h2>
+                <a href="{% url 'index' %}"><img src="{% static 'encyclopedia/W_logo.png' %}" alt="Logo" width="100" height="100"></a>
+                <a href="{% url 'index' %}" style="color: #b8c0e0"><h2>Wiki</h2></a>
                 <form action="{% url 'search' %}" method="get">
                     <input class="search" type="text" name="q" placeholder="Search Encyclopedia">
                 </form>
-                <div>
-                    <a href="{% url 'index' %}">Home</a>
-                </div>
-                <div>
-                    <a href="{% url 'create' %}">Create New Page</a>
-                </div>
-                <div>
-                    Random Page
+
+                <div id="nav-buttons">
+                    <div class="d-grid gap-2 col-18 mx-left">
+                        <a id="home-button" href="{% url 'index' %}" class="btn btn-primary github-button" type="button">Home</a>
+                        <a id="create-button" href="{% url 'create' %}" class="btn btn-primary github-button" type="button">Create New Page</a>
+                        <a href="{% url 'random' %}" class="btn btn-primary github-button" type="button">Random Page</a>
+                    </div>
                 </div>
                 {% block nav %}
                 {% endblock %}

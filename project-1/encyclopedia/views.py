@@ -12,10 +12,12 @@ def convert_md_to_html(title):
     else:
         return markdowner.convert(content)
 
+
 def index(request):
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()
     })
+
 
 def entry(request, title):
     html_content = convert_md_to_html(title)
@@ -29,6 +31,7 @@ def entry(request, title):
             "content": html_content
         })
 
+
 def search(request):
     query = request.GET.get("q")
 
@@ -37,19 +40,20 @@ def search(request):
             "message": "Please enter a search term."
         })
 
-    entries, is_exact_match = util.search_entries(query)
+    entries = util.search_entries(query)
 
     if len(entries) == 0:
         return render(request, "encyclopedia/error.html", {
             "message": "No entries found."
         })
-    elif is_exact_match:
+    elif len(entries) == 1:
         return redirect("entry", entries[0])
     else:
         return render(request, "encyclopedia/search.html", {
             "query": query,
             "entries": entries
         })
+
 
 def create(request):
     if request.method == "GET":
@@ -75,3 +79,32 @@ def create(request):
         util.create_entry(title, content)
 
         return redirect("/wiki/" + title)
+
+
+def edit(request, title):
+    if request.method == "GET":
+        content = util.get_entry(title)
+        if content == None:
+            return render(request, "encyclopedia/error.html", {
+                "message": "This entry does not exist."
+            })
+        else:
+            return render(request, "encyclopedia/edit.html",
+            {
+                "title": title,
+                "content": content
+            })
+    if request.method == "POST":
+        title = request.POST["title"]
+        content = request.POST["content"]
+
+        if not content.startswith(f"# {title}"):
+            content = f"# {title}\n\n{content}"
+
+        util.save_entry(title, content)
+        return redirect("/wiki/" + title)
+
+
+def random_entry(request):
+    title = util.get_random_entry()
+    return redirect("/wiki/" + title)

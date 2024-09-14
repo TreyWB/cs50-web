@@ -5,8 +5,6 @@
 {% endblock %}
 
 {% block body %}
-    <h3>CREATE A NEW WIKI ENTRY</h3>
-
     <style>
     h3 {
         margin-left: 0.5%;
@@ -78,15 +76,17 @@
 
     </style>
 
+    <h3>EDIT AN EXISTING WIKI ENTRY</h3>
+
     <div id="editor">
 
-        <form action="{% url 'create' %}" method="post">
-            {% csrf_token %}
-            <input type="text" name="title" id="title-field" class="custom-textbox" placeholder="Title">
-            <input type="submit", id="submit-button", value="Create entry...">
-            <a href="{% url 'index' %}" id="cancel-button">Cancel</a>
-            <br>
-            <textarea name="content" id="content-field" class="custom-textbox" placeholder="Description"></textarea>
+        <form action="/edit/{{ title }}" method="POST">
+          {% csrf_token %}
+          <input type="text" name="title" id="title-field" class="custom-textbox" value="{{ title }}" placeholder="Title">
+          <input type="submit" id="submit-button" value="Submit changes...">
+          <a href="/wiki/{{ title }}" id="cancel-button">Cancel</a>
+          <br>
+          <textarea name="content" id="content-field" class="custom-textbox" placeholder="Description">{{ content }}</textarea>
         </form>
 
     </div>

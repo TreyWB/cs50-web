@@ -1,9 +1,35 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    Encyclopedia
+    {{ title }}
 {% endblock %}
 
 {% block body %}
-    <p> {{ content | safe}} </p>
+    <style>
+        #edit-button {
+            float: right;
+            margin-right: 1.5%;
+            margin-top: 3.5%;
+        }
+
+        #edit-button {
+            background-color: #24273a;
+            padding: 1px 6px;
+            border-radius: 6px;
+            color: #cad3f5;
+            text-decoration: none;
+            float: right;
+        }
+
+        #edit-button:hover {
+            background-color: darkred;
+        }
+
+    </style>
+
+    <div id="edit-button">
+        <a href="/edit/{{ title }}" id="edit-button">Edit</a>
+    </div>
+
+    <p id="entry-content"> {{ content | safe}} </p>
 {% endblock %}
