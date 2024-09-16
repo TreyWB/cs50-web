@@ -37,7 +37,7 @@
     <div class="buttons">
 
         <div id="edit">
-            <form action="{% url 'edit_listing' %}" method="POST">
+            <form action="{% url 'edit_listing' listing.id %}" method="GET">
                 {% csrf_token %}
                 <input type="submit" value="Edit Listing">
             </form>
@@ -79,6 +79,43 @@
         </div>
 
         {% endif %}
+
+    </div>
+
+    <div class="comment-section">
+        <h5>Comments ({{ comment_count }})</h5>
+
+        <p class="d-inline-flex gap-1">
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+              Button with data-bs-target
+            </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+            <form action="{% url 'add_comment' listing.id %}" method="POST">
+                {% csrf_token %}
+                <!-- <input type="text" name="comment" placeholder="Add a comment"> -->
+                <textarea name="comment" placeholder="Add a comment" rows="4" cols="50"></textarea>
+                <br>
+                <input type="submit" value="Add Comment">
+            </form>
+        </div>
+
+        <hr>
+
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="comment">
+                    <p>{{ comment.user }} * {{ comment.posted_date }}</p>
+                    <br>
+                    <p>{{ comment.comment }}</p>
+                </div>
+
+            {% endfor %}
+        {% else %}
+            <p>No comments yet.</p>
+        {% endif %}
+
+
 
     </div>
 {% endblock %}

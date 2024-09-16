@@ -3,19 +3,6 @@
 {% block body %}
     <h2>Create a Listing</h2>
 
-    <!-- <div id="editor"></div>
-
-        <form action="/edit/{{ title }}" method="POST">
-          {% csrf_token %}
-          <input type="text" name="title" id="title-field" class="custom-textbox" value="{{ title }}" placeholder="Title">
-          <input type="submit" id="submit-button" value="Submit changes...">
-          <a href="/wiki/{{ title }}" id="cancel-button">Cancel</a>
-          <br>
-          <textarea name="content" id="content-field" class="custom-textbox" placeholder="Description">{{ content }}</textarea>
-        </form>
-
-    </div> -->
-
     <div class="listing-form">
         <form action="{% url 'create_listing' %}" method="POST">
             {% csrf_token %}

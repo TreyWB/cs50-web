@@ -13,7 +13,7 @@
             {% endif %}
 
             <p>{{ listing.description }}</p>
-            <p>${{ listing.get_current_bid }}</p>
+            <p>${{ listing.get_current_bid|floatformat:2 }}</p>
         </div>
     {% endfor %}
 {% endblock %}

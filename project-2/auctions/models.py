@@ -59,7 +59,11 @@ class Comments(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listings, on_delete=models.CASCADE)
+    posted_date = models.DateTimeField(auto_now_add=True)
     comment = models.TextField()
+
+    def comment_count(self):
+        return Comments.objects.filter(listing=self).count()
 
 class Winners(models.Model):
     id = models.AutoField(primary_key=True)

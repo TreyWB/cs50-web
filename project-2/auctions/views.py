@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Max
 
 from .forms import CreateListingForm, BidForm
-from .models import User, Listings, Watchlist, Bids, Winners
+from .models import User, Listings, Watchlist, Bids, Winners, Categories, Comments
 
 
 def index(request):
@@ -99,13 +99,17 @@ def listing(request, listing_id):
         is_watched = False  # If the user is not authenticated, default to False
 
     winner = Winners.objects.filter(listing=listing).first()
+    comments = Comments.objects.filter(listing=listing).all()
+    comment_count = comments.count()
 
     # Render the template with the context
     return render(request, "auctions/listing.html", {
         "listing": listing,
         "form": form,
         "is_watched": is_watched,
-        "winner": winner
+        "winner": winner,
+        "comments": comments,
+        "comment_count": comment_count
     })
 
 
@@ -206,10 +210,11 @@ def close_listing(request):
         listing.is_active = False
         listing.save()
 
-        winning_bid = Bids.objects.filter(listing=listing).aggregate(Max('bid'))['bid__max']
-        winner = Bids.objects.filter(listing=listing).aggregate(Max('user_id'))['user_id__max']
+        if listing.initial_bid != listing.get_current_bid():
+            winning_bid = Bids.objects.filter(listing=listing).aggregate(Max('bid'))['bid__max']
+            winner = Bids.objects.filter(listing=listing).aggregate(Max('user_id'))['user_id__max']
 
-        Winners.objects.create(listing=listing, winning_bid=winning_bid, user_id=winner)
+            Winners.objects.create(listing=listing, winning_bid=winning_bid, user_id=winner)
 
         return HttpResponseRedirect(reverse("listing", args=[listing_id]))
 
@@ -218,5 +223,75 @@ def close_listing(request):
             "message": "You must be logged in to close a listing."
         })
 
-def edit_listing(request):
-    pass
+def edit_listing(request, listing_id):  # Accept listing_id as a parameter
+    # Retrieve the listing instance
+    listing = get_object_or_404(Listings, id=listing_id)
+    categories = Categories.objects.all()
+
+    if request.method == "GET" and request.user.is_authenticated:
+        return render(request, "auctions/edit_listing.html", {
+            "listing": listing,
+            "categories": categories,
+        })
+
+    # Ensure the user is authenticated and is the owner
+    if not request.user.is_authenticated:
+        return render(request, "auctions/error.html", {
+            "message": "You must be logged in to edit a listing."
+        })
+
+    if listing.user != request.user:
+        return render(request, "auctions/error.html", {
+            "message": "You are not the owner of this listing."
+        })
+
+    if request.method == "POST":
+        # Grab data from the HTML form using request.POST
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        initial_bid = request.POST.get("initial_bid")
+        category_id = request.POST.get("category")
+        photo = request.FILES.get("photo")
+
+        # Update the listing object with form data
+        listing.title = title
+        listing.description = description
+        listing.initial_bid = initial_bid
+        listing.category = Categories.objects.get(id=category_id) if category_id else None
+
+        # Only update the photo if a new one is uploaded
+        if photo:
+            listing.photo = photo
+
+        # Save the updated listing object
+        listing.save()
+
+        # Redirect to the listing page after saving
+        return HttpResponseRedirect(reverse("listing", args=[listing_id]))
+
+    else:
+        # Render the edit form with the current listing data
+        categories = Categories.objects.all()
+        return render(request, "auctions/edit_listing.html", {
+            "listing": listing,
+            "categories": categories,
+        })
+
+def add_comment(request, listing_id):
+    if request.method == "POST" and request.user.is_authenticated:
+        comment = request.POST.get("comment")
+        user_id = request.user.id
+        listing = get_object_or_404(Listings, id=listing_id)
+
+        if not comment or not user_id:
+            return render(request, "auctions/error.html", {
+                "message": "Invalid request: comment or user_id is missing."
+            })
+
+        Comments.objects.create(listing=listing, comment=comment, user_id=user_id)
+        return HttpResponseRedirect(reverse("listing", args=[listing_id]))
+
+    else:
+        return render(request, "auctions/error.html", {
+            "message": "You must be logged in to add a comment."
+        })

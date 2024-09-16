@@ -3,11 +3,13 @@ from .models import Listings, Categories, Bids, User
 
 class CreateListingForm(forms.ModelForm):
     title = forms.CharField(max_length=64)
+
     category = forms.ModelChoiceField(
         queryset=Categories.objects.all(),
         empty_label="Select a category",
         required=False
     )
+
     photo = forms.ImageField(required=False)
     initial_bid = forms.DecimalField(max_digits=10, decimal_places=2)
     description = forms.CharField(widget=forms.Textarea)
@@ -30,6 +32,32 @@ class CreateListingForm(forms.ModelForm):
             listing.save()
         return listing
 
+# class EditListingForm(forms.ModelForm):
+#     class Meta:
+#         model = Listings  # Link this form to the Listings model
+#         fields = ['title', 'description', 'initial_bid', 'photo', 'category']  # Include the fields you want in the form
+#         exclude = ['user', 'watchlist_count']  # Exclude fields that are set programmatically or not needed
+        
+#         # Customize widgets if needed
+#         widgets = {
+#             'title': forms.TextInput(attrs={'maxlength': 64}),
+#             'description': forms.Textarea(attrs={'rows': 4, 'cols': 15}),
+#             'initial_bid': forms.NumberInput(attrs={'step': 0.01}),
+#             'photo': forms.ClearableFileInput(),
+#             'category': forms.Select(attrs={'class': 'form-control'})
+#         }
+
+#     # def __init__(self, *args, **kwargs):
+#     #     self.user_id = kwargs.pop('user_id', None)  # Remove 'user_id' from kwargs and store it in an instance variable
+#     #     super().__init__(*args, **kwargs)  # Call the parent class's __init__ with the remaining kwargs
+
+#     def save(self, commit=True):
+#         listing = super().save(commit=False)
+#         if self.user_id:
+#             listing.user_id = self.user_id
+#         if commit:
+#             listing.save()
+#         return listing
 
 class BidForm(forms.ModelForm):
     bid = forms.DecimalField(max_digits=10, decimal_places=2)
