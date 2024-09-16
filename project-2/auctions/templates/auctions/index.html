@@ -6,7 +6,7 @@
     {% for listing in listings %}
         <div class="listing">
 
-            <h3>{{ listing.title }}</h3>
+            <a href="{% url 'listing' listing.id %}"><h3>{{ listing.title }}</h3></a>
 
             {% if listing.photo %}
             <img src="{{ listing.photo }}" alt="Phtoto of {{ listing.title }}">

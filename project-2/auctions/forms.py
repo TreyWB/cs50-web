@@ -1,5 +1,5 @@
 from django import forms
-from .models import Listings, Categories, Bids
+from .models import Listings, Categories, Bids, User
 
 class CreateListingForm(forms.ModelForm):
     title = forms.CharField(max_length=64)
@@ -35,19 +35,43 @@ class BidForm(forms.ModelForm):
     bid = forms.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
-        model = Bids  # Link this form to the Bid model
-        fields = ['bid']  # Include the fields you want in the form
-        exclude = ['user', 'listing']  # Exclude fields that are set programmatically or not needed
+        model = Bids  # Link this form to the Bids model
+        fields = ['bid']  # Include only the fields you want in the form
+        exclude = ['user', 'listing']  # Exclude fields that are set programmatically
 
     def __init__(self, *args, **kwargs):
         self.listing_id = kwargs.pop('listing_id', None)  # Remove 'listing_id' from kwargs and store it in an instance variable
+        self.user_id = kwargs.pop('user_id', None)  # Remove 'user_id' from kwargs and store it in an instance variable
         super().__init__(*args, **kwargs)  # Call the parent class's __init__ with the remaining kwargs
+
+    def clean(self):
+        cleaned_data = super().clean()
+        bid = cleaned_data.get('bid')
+
+        if self.listing_id:
+            listing = Listings.objects.get(id=int(self.listing_id))
+            current_bid = listing.get_current_bid()
+
+            if bid <= current_bid:
+                raise forms.ValidationError("Bid must be greater than current bid.")
+
+        return cleaned_data
 
     def save(self, commit=True):
         bid = super().save(commit=False)
-        # Assign the listing_id to the listing field
+
+        # Debugging: Print the values to ensure they are correct
+        print(f"Saving bid for listing_id: {self.listing_id}, user_id: {self.user_id}")
+
+        # Correctly assign the listing and user instances to the foreign key fields
         if self.listing_id:
-            bid.listing_id = self.listing_id
+            listing_instance = Listings.objects.get(id=int(self.listing_id))  # Ensure the ID is an integer
+            bid.listing = listing_instance  # Assign the Listing instance
+
+        if self.user_id:
+            user_instance = User.objects.get(id=int(self.user_id))  # Ensure the ID is an integer
+            bid.user = user_instance  # Assign the User instance
+
         if commit:
             bid.save()
         return bid

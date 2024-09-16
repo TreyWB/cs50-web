@@ -3,6 +3,7 @@
 {% block body %}
     <div class="listing-info">
         <h2>{{ listing.title }}</h2>
+        <h4>Winner: {{ winner.user }}</h4>
         <p>Category: {{ listing.category }}</p>
         <p>Posted By: {{ listing.user }}</p>
 
@@ -10,31 +11,28 @@
         <img src="{{ listing.photo }}" alt="Phtoto of {{ listing.title }}">
         {% endif %}
 
-        <p>${{ listing.get_current_bid }}</p>
+        <p>${{ listing.get_current_bid|floatformat:2 }}</p>
+        <p>Status: {{ listing.is_active|yesno:"Active,Closed" }}</p>
 
         <br>
 
         <p>{{ listing.description }}</p>
-        <p>Watchlist Count: {{ listing.watchlist_count }}</p>
 
     </div>
 
-    <!-- <div class="bid-form">
-        <form action="{% url 'create_listing' %}" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Create Listing">
-        </form>
-    </div> -->
+    {% if listing.is_active %}
 
     <div class="bid-form">
         <form action="{% url 'new_bid' %}" method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Bid">
+            <input type="hidden" name="listing_id" value="{{ listing.id }}">
+            <input type="number" step="0.01" name="bid" placeholder="Enter your bid" required>
+
+            <button type="submit">Place Bid</button>
         </form>
     </div>
 
+    {% endif %}
 
     <div class="buttons">
 
@@ -47,16 +45,40 @@
 
         <br>
 
+        {% if listing.is_active and listing.user_id == user.id %}
+            <div id="close-listing">
+                <form action="{% url 'close_listing' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="listing_id" value="{{ listing.id }}">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <input type="submit" value="Close Listing">
+                </form>
+            </div>
+        {% endif %}
 
-        <!-- TODO: On 1st button press, add to watchlist -->
-        <!-- TODO: On 2nd button press, remove from watchlist -->
-        <div id="watchlist">
-            <form action="{% url 'watchlist-added' %}" method="POST">
+        {% if is_watched %}
+
+        <div id="watchlist"></div>
+            <form action="{% url 'watchlist_removed' %}" method="POST">
                 {% csrf_token %}
+                <input type="hidden" name="listing_id" value="{{ listing.id }}">
+                <input type="submit" value="Remove from Watchlist">
+                <p>{{ listing.watchlist_count }}</p>
+            </form>
+        </div>
+
+        {% else %}
+
+        <div id="watchlist">
+            <form action="{% url 'watchlist_added' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="listing_id" value="{{ listing.id }}">
                 <input type="submit" value="Add to Watchlist">
                 <p>{{ listing.watchlist_count }}</p>
             </form>
         </div>
+
+        {% endif %}
 
     </div>
 {% endblock %}
