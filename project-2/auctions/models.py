@@ -11,6 +11,10 @@ class Categories(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64)
 
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+
     def __str__(self) -> str:
         return self.name
 
@@ -24,9 +28,14 @@ class Listings(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(0)]
     )
-    photo = models.CharField(max_length=255, null=True)
+
+    photo = models.ImageField(null=True, upload_to='auctions/photos', blank=True)
     category = models.ForeignKey(Categories, on_delete=models.PROTECT, null=True)
     is_active = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Listing"
+        verbose_name_plural = "Listings"
 
     def get_current_bid(self):
         highest_bid = Bids.objects.filter(listing=self).aggregate(Max('bid'))['bid__max']
@@ -43,6 +52,10 @@ class Bids(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listings, on_delete=models.PROTECT)
     bid = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        verbose_name = "Bid"
+        verbose_name_plural = "Bids"
 
 class Watchlist(models.Model):
     id = models.AutoField(primary_key=True)
@@ -62,6 +75,10 @@ class Comments(models.Model):
     posted_date = models.DateTimeField(auto_now_add=True)
     comment = models.TextField()
 
+    class Meta:
+        verbose_name = "Comment"
+        verbose_name_plural = "Comments"
+
     def comment_count(self):
         return Comments.objects.filter(listing=self).count()
 
@@ -70,3 +87,7 @@ class Winners(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listings, on_delete=models.CASCADE)
     winning_bid = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    class Meta:
+        verbose_name = "Winner"
+        verbose_name_plural = "Winners"

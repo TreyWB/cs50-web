@@ -295,3 +295,43 @@ def add_comment(request, listing_id):
         return render(request, "auctions/error.html", {
             "message": "You must be logged in to add a comment."
         })
+
+def my_watchlist(request):
+    if request.user.is_authenticated:
+        watchlist = Watchlist.objects.filter(user_id=request.user.id)
+        listings = Listings.objects.filter(id__in=watchlist.values_list('listing_id', flat=True))
+        return render(request, "auctions/my_watchlist.html", {
+            "watchlist": watchlist,
+            "listings": listings
+        })
+    else:
+        return render(request, "auctions/error.html", {
+            "message": "You must be logged in to view your watchlist."
+        })
+
+def categories(request):
+    categories = Categories.objects.all()
+    return render(request, "auctions/categories.html", {
+        "categories": categories
+    })
+
+def category_details(request, category_name):
+    category = get_object_or_404(Categories, name=category_name)
+    listings = Listings.objects.filter(category=category)
+    return render(request, "auctions/category_details.html", {
+        "category": category,
+        "listings": listings
+    })
+
+def user_listings(request, user_id):
+    listing_user = get_object_or_404(User, id=user_id)  # Fetch the user whose listings are being viewed
+
+    if request.user.is_authenticated and request.user.id == user_id:
+        listings = Listings.objects.filter(user=listing_user)
+    else:
+        listings = Listings.objects.filter(user=listing_user).exclude(is_active=0)
+
+    return render(request, "auctions/user_listings.html", {
+        "listing_user": listing_user,
+        "listings": listings,
+    })

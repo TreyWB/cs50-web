@@ -15,6 +15,8 @@ urlpatterns = [
     path("new_bid", views.new_bid, name="new_bid"),
     path("close_listing", views.close_listing, name="close_listing"),
     path("add_comment/<int:listing_id>", views.add_comment, name="add_comment"),
-    # TODO add path to show all user listings
-    # TODO add path to see your watchlist
+    path("my_watchlist", views.my_watchlist, name="my_watchlist"),
+    path("categories", views.categories, name="categories"),
+    path("category/<str:category_name>", views.category_details, name="category_details"),
+    path("listings/<int:user_id>", views.user_listings, name="user_listings"),
 ]

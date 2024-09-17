@@ -5,7 +5,7 @@
         <h2>{{ listing.title }}</h2>
         <h4>Winner: {{ winner.user }}</h4>
         <p>Category: {{ listing.category }}</p>
-        <p>Posted By: {{ listing.user }}</p>
+        <p>Posted By: <a href="{% url 'user_listings' listing.user.id %}">{{ listing.user }}</a></p>
 
         {% if listing.photo %}
         <img src="{{ listing.photo }}" alt="Phtoto of {{ listing.title }}">
@@ -87,7 +87,7 @@
 
         <p class="d-inline-flex gap-1">
             <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-              Button with data-bs-target
+              Add a Comment
             </button>
         </p>
         <div class="collapse" id="collapseExample">

@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Saved Listings</h2>
+
+    {% for listing in listings %}
+        <div class="listing">
+
+            <a href="{% url 'listing' listing.id %}"><h3>{{ listing.title }}</h3></a>
+
+            <!-- {% if listing.photo %}
+            <img src="{{ listing.photo }}" alt="Phtoto of {{ listing.title }}">
+            {% endif %} -->
+
+            <!-- <p>{{ listing.description }}</p> -->
+            <p>${{ listing.get_current_bid|floatformat:2 }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
