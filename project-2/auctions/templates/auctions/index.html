@@ -1,17 +1,30 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
+    <h2>Listings</h2>
+
+    <form method="GET" action="{% url 'index' %}">
+        <div class="form-check">
+            <input
+                class="form-check-input"
+                type="checkbox"
+                value="1"
+                id="flexCheckDefault"
+                name="show_closed"
+                {% if request.GET.show_closed == "1" %}checked{% endif %}>
+            <label class="form-check-label" for="flexCheckDefault">
+                Include closed listings
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Filter Listings</button>
+    </form>
 
     {% for listing in listings %}
         <div class="listing">
-
             <a href="{% url 'listing' listing.id %}"><h3>{{ listing.title }}</h3></a>
-
-            {% if listing.photo %}
-            <img src="{{ listing.photo }}" alt="Phtoto of {{ listing.title }}">
+            {% if listing.photo_url %}
+            <img src="{{ listing.photo_url }}">
             {% endif %}
-
             <p>{{ listing.description }}</p>
             <p>${{ listing.get_current_bid|floatformat:2 }}</p>
         </div>

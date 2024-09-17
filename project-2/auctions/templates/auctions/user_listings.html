@@ -8,6 +8,12 @@
 
             <a href="{% url 'listing' listing.id %}"><h3>{{ listing.title }}</h3></a>
 
+            {% if listing.photo_url %}
+                <img src="{{ listing.photo_url }}">
+            {% endif %}
+
+            <p>${{ listing.get_current_bid|floatformat:2 }}</p>
+
         </div>
     {% endfor %}
 {% endblock %}

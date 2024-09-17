@@ -3,12 +3,16 @@
 {% block body %}
     <div class="listing-info">
         <h2>{{ listing.title }}</h2>
+
+        {% if not listing.is_active %}
         <h4>Winner: {{ winner.user }}</h4>
+        {% endif %}
+
         <p>Category: {{ listing.category }}</p>
         <p>Posted By: <a href="{% url 'user_listings' listing.user.id %}">{{ listing.user }}</a></p>
 
-        {% if listing.photo %}
-        <img src="{{ listing.photo }}" alt="Phtoto of {{ listing.title }}">
+        {% if listing.photo_url %}
+        <img src="{{ listing.photo_url }}">
         {% endif %}
 
         <p>${{ listing.get_current_bid|floatformat:2 }}</p>
@@ -20,7 +24,7 @@
 
     </div>
 
-    {% if listing.is_active %}
+    {% if listing.is_active and listing.user_id != user.id %}
 
     <div class="bid-form">
         <form action="{% url 'new_bid' %}" method="POST">
@@ -36,6 +40,7 @@
 
     <div class="buttons">
 
+        {% if user.is_authenticated and listing.user_id == user.id %}
         <div id="edit">
             <form action="{% url 'edit_listing' listing.id %}" method="GET">
                 {% csrf_token %}
@@ -43,6 +48,7 @@
             </form>
         </div>
 
+        {% endif %}
         <br>
 
         {% if listing.is_active and listing.user_id == user.id %}
@@ -52,6 +58,17 @@
                     <input type="hidden" name="listing_id" value="{{ listing.id }}">
                     <input type="hidden" name="user_id" value="{{ user.id }}">
                     <input type="submit" value="Close Listing">
+                </form>
+            </div>
+        {% endif %}
+
+        {% if not listing.is_active and user.id == listing.user_id %}
+            <div id="reopen-listing">
+                <form action="{% url 'reopen_listing' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="listing_id" value="{{ listing.id }}">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <input type="submit" value="Reopen Listing">
                 </form>
             </div>
         {% endif %}
@@ -93,7 +110,6 @@
         <div class="collapse" id="collapseExample">
             <form action="{% url 'add_comment' listing.id %}" method="POST">
                 {% csrf_token %}
-                <!-- <input type="text" name="comment" placeholder="Add a comment"> -->
                 <textarea name="comment" placeholder="Add a comment" rows="4" cols="50"></textarea>
                 <br>
                 <input type="submit" value="Add Comment">
@@ -106,7 +122,6 @@
             {% for comment in comments %}
                 <div class="comment">
                     <p>{{ comment.user }} * {{ comment.posted_date }}</p>
-                    <br>
                     <p>{{ comment.comment }}</p>
                 </div>
 

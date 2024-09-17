@@ -3,11 +3,20 @@
 {% block body %}
     <h2>Listings in {{ category.name }}</h2>
 
-    {% for listing in listings %}
-        <div class="listing">
+    {% if listings %}
+        {% for listing in listings %}
+            <div class="listing">
+                <a href="{% url 'listing' listing.id %}"><h3>{{ listing.title }}</h3></a>
 
-            <a href=""><h3>{{ listing.title }}</h3></a>
+                {% if listing.photo_url %}
+                    <img src="{{ listing.photo_url }}">
+                {% endif %}
 
-        </div>
-    {% endfor %}
+                <p>${{ listing.get_current_bid|floatformat:2 }}</p>
+            </div>
+        {% endfor %}
+
+    {% else %}
+        <p>No listings in this category.</p>
+    {% endif %}
 {% endblock %}
