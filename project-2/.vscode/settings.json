@@ -1,0 +1,8 @@
+{
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false,
+    "prettier.printWidth": 99999,
+    "prettier.htmlWhitespaceSensitivity": "ignore",
+    "prettier.tabWidth": 4,
+    "prettier.trailingComma": "none"
+}

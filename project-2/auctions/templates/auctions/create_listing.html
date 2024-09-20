@@ -1,14 +1,69 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Create a Listing</h2>
+<h2 class="text-5xl font-bold text-sky-900 text-center">
+    Create a Listing
+</h2>
 
-    <div class="listing-form">
-        <form action="{% url 'create_listing' %}" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Create Listing">
-        </form>
+<hr>
+
+<form action="{% url 'create_listing' %}" method="POST" class="max-w mx-auto">
+    {% csrf_token %}
+    <!-- Title Field -->
+    <div class="mb-3">
+        <label class="block mb-2 text-m font-medium text-gray-900">
+            Title
+        </label>
+        <input type="text" name="title" required
+            class="pl-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
     </div>
+    <!-- Category Field -->
+    <div class="mb-3">
+        <label for="countries" class="block mb-2 text-m font-medium text-gray-900">
+            Select Category
+        </label>
+        <select id="countries" name="category" required
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <!-- Description Field -->
+    <div class="mb-3">
+        <label class="block mb-2 text-m font-medium text-gray-900">
+            Description
+        </label>
+        <textarea rows="6" name="description" required
+            class="pl-2.5 w-full px-0 text-m text-gray-900 border border-gray-300 rounded-lg p-2 text-base bg-gray-50 focus:ring-blue-500 focus:border-blue-500"></textarea>
+    </div>
+    <!-- Photo Url Field -->
+    <div class="mb-3">
+        <label class="block mb-2 text-m font-medium text-gray-900">
+            Photo Url
+        </label>
+        <input type="text" name="photo_url" required
+            class="pl-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+    </div>
+    <span class="inline-flex justify-between w-full">
+        <!-- Initial Bid Field -->
+        <div class="mb-3">
+            <label class="block mb-2 text-m font-medium text-gray-900">
+                Initial Bid
+            </label>
+            <input type="number" name="initial_bid" min="0" step="0.01" required
+                class="pl-2.5 max-md bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
+        </div>
+        <!-- Submit Button -->
+        <div class="mt-9">
+            <button type="submit"
+                class="inline-flex items-center py-2 px-3 text-s font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-0 focus:ring-blue-200 hover:bg-blue-800">
+                Create Listing
+            </button>
+        </div>
+    </span>
+</form>
+
+
 
 {% endblock %}

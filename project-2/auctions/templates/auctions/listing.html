@@ -62,30 +62,36 @@
 
     <div class="flex space-x-1">
         <!-- Wishlist Button -->
-            {% if is_watched %}
-            <div>
-                <form action="{% url 'watchlist_removed' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="listing_id" value="{{ listing.id }}">
-                    <button type="submit" class="focus:outline-none rounded-lg text-sm p-1 text-center inline-flex items-center me-2 text-gray-600 font-semibold hover:border hover:rounded-lg hover:bg-gray-300 focus:ring-0">
-                        <svg class="w-7 h-7 text-blue-500 fill-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m17 21-5-4-5 4V3.889a.92.92 0 0 1 .244-.629.808.808 0 0 1 .59-.26h8.333a.81.81 0 0 1 .589.26.92.92 0 0 1 .244.63V21Z"/>
-                          </svg>
-                          {{ listing.watchlist_count }}
-                        </button>
-                </form>
-            </div>
+        {% if is_watched %}
+        <div>
+            <form action="{% url 'watchlist_removed' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="listing_id" value="{{ listing.id }}">
+                <button type="submit"
+                    class="focus:outline-none rounded-lg text-sm p-1 text-center inline-flex items-center me-2 text-gray-600 font-semibold hover:border hover:rounded-lg hover:bg-gray-300 focus:ring-0">
+                    <svg class="w-7 h-7 text-blue-500 fill-blue-500" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m17 21-5-4-5 4V3.889a.92.92 0 0 1 .244-.629.808.808 0 0 1 .59-.26h8.333a.81.81 0 0 1 .589.26.92.92 0 0 1 .244.63V21Z" />
+                    </svg>
+                    {{ listing.watchlist_count }}
+                </button>
+            </form>
+        </div>
         {% else %}
         <div>
             <form action="{% url 'watchlist_added' %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="listing_id" value="{{ listing.id }}">
-                <button type="submit" class="focus:outline-none rounded-lg text-sm p-1 text-center inline-flex items-center me-2 text-gray-600 font-semibold hover:border hover:rounded-lg hover:bg-gray-300 focus:ring-0">
-                    <svg class="w-7 h-7 text-blue-500 hover:fill-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m17 21-5-4-5 4V3.889a.92.92 0 0 1 .244-.629.808.808 0 0 1 .59-.26h8.333a.81.81 0 0 1 .589.26.92.92 0 0 1 .244.63V21Z"/>
-                      </svg>
-                      {{ listing.watchlist_count }}
-                    </button>
+                <button type="submit"
+                    class="focus:outline-none rounded-lg text-sm p-1 text-center inline-flex items-center me-2 text-gray-600 font-semibold hover:border hover:rounded-lg hover:bg-gray-300 focus:ring-0">
+                    <svg class="w-7 h-7 text-blue-500 hover:fill-blue-500" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m17 21-5-4-5 4V3.889a.92.92 0 0 1 .244-.629.808.808 0 0 1 .59-.26h8.333a.81.81 0 0 1 .589.26.92.92 0 0 1 .244.63V21Z" />
+                    </svg>
+                    {{ listing.watchlist_count }}
+                </button>
             </form>
         </div>
         {% endif %}
@@ -97,7 +103,9 @@
                 {% csrf_token %}
                 <input type="hidden" name="listing_id" value="{{ listing.id }}">
                 <input type="hidden" name="user_id" value="{{ user.id }}">
-                <button type="submit" class="mt-1 text-white focus:outline-none rounded-sm px-3 py-2.5 text-sm font-semibold text-center me-2 mb-2 focus:ring-0 bg-red-700 hover:bg-red-800">Close Listing</button>
+                <button type="submit"
+                    class="mt-1 text-white focus:outline-none rounded-sm px-3 py-2.5 text-sm font-semibold text-center me-2 mb-2 focus:ring-0 bg-red-700 hover:bg-red-800">Close
+                    Listing</button>
             </form>
         </div>
         {% endif %}
@@ -109,17 +117,21 @@
                 {% csrf_token %}
                 <input type="hidden" name="listing_id" value="{{ listing.id }}">
                 <input type="hidden" name="user_id" value="{{ user.id }}">
-                <button type="submit" class="mt-1 text-white focus:outline-none rounded-sm px-3 py-2.5 text-sm font-semibold text-center me-2 mb-2 focus:ring-0 bg-emerald-700 hover:bg-emerald-800">Reopen Listing</button>
+                <button type="submit"
+                    class="mt-1 text-white focus:outline-none rounded-sm px-3 py-2.5 text-sm font-semibold text-center me-2 mb-2 focus:ring-0 bg-emerald-700 hover:bg-emerald-800">Reopen
+                    Listing</button>
             </form>
         </div>
-    {% endif %}
+        {% endif %}
 
         <!-- Edit Button -->
         {% if user.is_authenticated and listing.user_id == user.id %}
         <div>
             <form action="{% url 'edit_listing' listing.id %}" method="GET">
                 {% csrf_token %}
-                <button type="submit" class="mt-1 text-white focus:outline-none rounded-sm px-3 py-2.5 text-sm font-semibold text-center me-2 mb-2 focus:ring-0 bg-indigo-700 hover:bg-indigo-800">Edit Listing</button>
+                <button type="submit"
+                    class="mt-1 text-white focus:outline-none rounded-sm px-3 py-2.5 text-sm font-semibold text-center me-2 mb-2 focus:ring-0 bg-indigo-700 hover:bg-indigo-800">Edit
+                    Listing</button>
             </form>
         </div>
         {% endif %}
@@ -146,7 +158,8 @@
             aria-describedby="helper-text-explanation" placeholder="Enter bid" required>
 
         <!-- Plus (Submit) Button -->
-        <button type="submit" class="ml-2 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-1 text-center inline-flex items-center">
+        <button type="submit"
+            class="ml-2 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-1 text-center inline-flex items-center">
             <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                 width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -161,12 +174,17 @@
 <!-- Comment Container Accordion -->
 <div id="accordion-collapse" data-accordion="collapse" class="mt-3">
     <h5>
-        <button type="button" class="flex items-center justify-between focus:outline-none w-full p-3 font-small rtl:text-right border border-b-0 rounded-t-xl focus:ring-0 border-gray-200 text-black bg-white gap-3" data-accordion-target="#accordion-collapse-body-1" aria-expanded="false" aria-controls="accordion-collapse-body-1">
-        <span class="text-black">Comments ({{ comment_count }})</span>
+        <button type="button"
+            class="flex items-center justify-between focus:outline-none w-full p-3 font-small rtl:text-right border border-b-0 rounded-t-xl focus:ring-0 border-gray-200 text-black bg-white gap-3"
+            data-accordion-target="#accordion-collapse-body-1" aria-expanded="false"
+            aria-controls="accordion-collapse-body-1">
+            <span class="text-black">Comments ({{ comment_count }})</span>
 
-        <svg data-accordion-icon class="w-3 h-3 transition-transform duration-300 shrink-0 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-        </svg>
+            <svg data-accordion-icon class="w-3 h-3 transition-transform duration-300 shrink-0 text-black"
+                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 5 5 1 1 5" />
+            </svg>
         </button>
     </h5>
 
@@ -177,10 +195,13 @@
             {% csrf_token %}
             <div class="w-full mb-3 border rounded-lg ">
                 <div class="px-4 py-2 bg-white rounded-t-lg">
-                    <textarea name="comment" rows="4" class="w-full px-0 text-m border-0 bg-white focus:ring-0 text-black placeholder-gray-400" placeholder="Write a comment..." required ></textarea>
+                    <textarea name="comment" rows="4"
+                        class="w-full px-0 text-m border-0 bg-white focus:ring-0 text-black placeholder-gray-400"
+                        placeholder="Write a comment..." required></textarea>
                 </div>
                 <div class="flex items-center justify-end px-3 py-2 border-t">
-                    <button type="submit" class="inline-flex items-center py-2 px-3 text-s font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-0 focus:ring-blue-200 hover:bg-blue-800">
+                    <button type="submit"
+                        class="inline-flex items-center py-2 px-3 text-s font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-0 focus:ring-blue-200 hover:bg-blue-800">
                         Post comment
                     </button>
                 </div>
@@ -205,10 +226,9 @@
         </div>
         {% endfor %}
         {% else %}
-            <h4 class="text-gray-600">No comments yet.</h4>
+        <h4 class="text-gray-600">No comments yet.</h4>
         {% endif %}
     </div>
 </div>
-
 
 {% endblock %}

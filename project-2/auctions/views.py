@@ -76,9 +76,11 @@ def register(request):
 def create_listing(request):
     if request.method == "GET" and request.user.is_authenticated:
         form = CreateListingForm()
+        categories = Categories.objects.all()
 
         return render(request, "auctions/create_listing.html", {
-            "form": form
+            "form": form,
+            "categories": categories
         })
     elif request.method == "POST" and request.user.is_authenticated:
         form = CreateListingForm(request.POST, request.FILES, user_id=request.user.id)
@@ -89,8 +91,10 @@ def create_listing(request):
 
             return HttpResponseRedirect(reverse("listing", args=[listing_id]))
         else:
+            categories = Categories.objects.all()
             return render(request, "auctions/create_listing.html", {
-                "form": form
+                "form": form,
+                "categories": categories
             })
     else:
         return render(request, "auctions/error.html", {
