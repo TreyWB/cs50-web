@@ -22,7 +22,7 @@
         <label class="block mb-2 text-m font-medium text-gray-900">
             Select Category
         </label>
-        <select name="category" required
+        <select name="category" placeholder="Select a category"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             {% for category in categories %}
             <option value="{{ category.id }}">{{ category.name }}</option>
@@ -42,7 +42,7 @@
         <label class="block mb-2 text-m font-medium text-gray-900">
             Photo Url
         </label>
-        <input type="text" name="photo_url" required
+        <input type="text" name="photo_url"
             class="pl-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
     </div>
     <span class="inline-flex justify-between w-full">
