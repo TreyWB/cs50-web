@@ -1,7 +1,7 @@
 from django.urls import reverse
-from django.db.models import Max
 from django.shortcuts import render
 from django.db import IntegrityError
+from django.db.models import Max, Count
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
@@ -350,7 +350,8 @@ def my_watchlist(request):
 
 
 def categories(request):
-    categories = Categories.objects.all()
+    # categories = Categories.objects.all()
+    categories = Categories.objects.annotate(number_of_listings=Count('listings'))
 
     return render(request, "auctions/categories.html", {
         "categories": categories

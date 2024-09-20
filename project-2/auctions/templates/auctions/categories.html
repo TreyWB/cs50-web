@@ -1,11 +1,23 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Categories</h2>
+    <h2 class="text-5xl font-bold text-sky-900 text-center">
+        Categories
+    </h2>
 
-    {% for category in categories %}
-        <div class="category">
-            <a href="{% url 'category_details' category.name %}"><h3>{{ category.name }}</h3></a>
+    <hr>
+
+    <div class="grid grid-cols-2 gap-4 mt-4">
+        {% for category in categories %}
+        <div class="max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-md text-center">
+            <a href="{% url 'category_details' category.name %}">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">{{ category.name }}</h5>
+            </a>
+            <p class="mb-3 font-normal text-gray-700">{{ category.number_of_listings }} Listings</p>
+            <a href="{% url 'category_details' category.name %}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-0 focus:outline-none">
+                View
+            </a>
         </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 {% endblock %}
