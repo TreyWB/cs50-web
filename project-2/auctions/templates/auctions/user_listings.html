@@ -1,19 +1,27 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>{{ listing_user }}'s Listings</h2>
+    <h2 class="text-5xl font-bold text-black text-center">
+    {{ listing_user }}'s Listings
+    </h2>
 
+    <hr>
+
+    {% if listings %}
     {% for listing in listings %}
-        <div class="listing">
-
-            <a href="{% url 'listing' listing.id %}"><h3>{{ listing.title }}</h3></a>
-
-            {% if listing.photo_url %}
-                <img src="{{ listing.photo_url }}">
-            {% endif %}
-
-            <p>${{ listing.get_current_bid|floatformat:2 }}</p>
-
-        </div>
+    <div class="listing border-gray-400 border rounded-lg shadow-md p-4 mb-4">
+        <a href="{% url 'listing' listing.id %}">
+            <h3>{{ listing.title }}</h3>
+        </a>
+        {% if listing.photo_url %}
+        <img src="{{ listing.photo_url }}" class="w-28 h-auto mb-2">
+        {% endif %}
+        <p>${{ listing.get_current_bid|floatformat:2 }}</p>
+    </div>
     {% endfor %}
+    {% else %}
+    <div class="mt-10 text-center">
+        <h4 class="text-gray-600">You haven't created any listings yet.</h4>
+    </div>
+    {% endif %}
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2 class="text-5xl font-bold text-sky-900 text-center">
+    <h2 class="text-5xl font-bold text-black text-center">
         Listings in {{ category.name }}
     </h2>
 
@@ -9,15 +9,44 @@
 
     {% if listings %}
     {% for listing in listings %}
-        <div class="listing border-gray-400 border rounded-lg shadow-md p-4 mb-4">
+        <div class="listing border-gray-400 border rounded-lg shadow-md p-3 mb-4">
+            <!-- Title -->
             <a href="{% url 'listing' listing.id %}">
                 <h3>{{ listing.title }}</h3>
             </a>
+            <!-- Photo -->
             {% if listing.photo_url %}
             <img src="{{ listing.photo_url }}" class="w-28 h-auto mb-2">
             {% endif %}
+            <!-- Description -->
             <p>{{ listing.description }}</p>
+            <!-- Price -->
             <p>${{ listing.get_current_bid|floatformat:2 }}</p>
+            <!-- Status -->
+            {% if listing.is_active %}
+            <div class="text-left">
+                <p class="font-semibold">Status:
+                    <span class="text-green-500">Active</span>
+                    <svg class="w-6 h-6 text-green-500 inline-flex" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                </p>
+            </div>
+            {% else %}
+            <div class="text-left">
+                <p class="font-semibold">Status:
+                    <span class="text-red-500">Closed</span>
+                    <svg class="w-6 h-6 text-red-500 inline-flex mb-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </p>
+            </div>
+            {% endif %}
         </div>
     {% endfor %}
     {% else %}

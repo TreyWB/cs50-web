@@ -3,7 +3,7 @@ from .models import Listings, Categories, Bids, User
 
 
 class CreateListingForm(forms.ModelForm):
-    title = forms.CharField(max_length=64)
+    title = forms.CharField(max_length=64, error_messages={'max_length': 'Title is too long.'})
 
     category = forms.ModelChoiceField(
         queryset=Categories.objects.all(),
@@ -11,7 +11,7 @@ class CreateListingForm(forms.ModelForm):
         required=False
     )
 
-    photo_url = forms.URLField(required=False)
+    photo_url = forms.URLField(required=False, max_length=200, error_messages={'max_length': 'Photo URL is too long.'})
     initial_bid = forms.DecimalField(max_digits=10, decimal_places=2)
     description = forms.CharField(widget=forms.Textarea)
 

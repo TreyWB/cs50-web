@@ -2,29 +2,73 @@
 
 {% block body %}
 
-    <h2>Register</h2>
+    <h2 class="text-5xl font-bold text-black">
+        Register
+    </h2>
+
+    <hr>
+
+    <p class="text-gray-600">
+        Already have an account? 
+        <a href="{% url 'login' %}">
+            <button type="button" class="text-blue-500 hover:underline focus:outline-none hover:text-blue-700 font-medium rounded-lg text-m px-1 py-2.5 text-center inline-flex items-center">
+                Sign in
+                <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                </svg>
+            </button>
+        </a>
+    </p>
+
+    <hr>
 
     {% if message %}
-        <div>{{ message }}</div>
+    <div class="flex items-center p-2 mb-0 text-m text-red-800 role="alert">
+        <svg class="flex-shrink-0 inline w-5 h-5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+        </svg>
+        <div>
+          <span class="font-medium">{{ message }}</span>
+        </div>
+      </div>
     {% endif %}
 
-    <form action="{% url 'register' %}" method="post">
+    <form action="{% url 'register' %}" method="POST">
         {% csrf_token %}
-        <div class="form-group">
-            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+        <!-- Username Field -->
+        <div class="mb-6">
+            <label class="block mb-2 text-m font-medium text-gray-900 ">
+                Username
+            </label>
+            <input type="text" name="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="johndoe" required/>
         </div>
-        <div class="form-group">
-            <input class="form-control" type="email" name="email" placeholder="Email Address">
+        <!-- Email Field -->
+        <div class="mb-6">
+            <label class="block mb-2 text-m font-medium text-gray-900 ">
+                Email address
+            </label>
+            <input type="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="john.doe@company.com" required/>
         </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
+        <!-- Password Field -->
+        <div class="mb-6">
+            <label class="block mb-2 text-m font-medium text-gray-900">
+                Password
+            </label>
+            <input type="password" name="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="•••••••••" required/>
         </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+        <!-- Confirm Password Field -->
+        <div class="mb-6">
+            <label class="block mb-2 text-m font-medium text-gray-900">
+                Confirm password
+            </label>
+            <input type="password" name="confirmation" class="bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="•••••••••" required/>
         </div>
-        <input class="btn btn-primary" type="submit" value="Register">
+        <!-- Submit Button -->
+        <div class="flex items-center justify-end">
+            <button type="submit" value="Register" class="inline-flex items-center py-2 px-3 text-s font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-0 focus:ring-blue-200 hover:bg-blue-800">
+                Create Account
+            </button>
+        </div>
     </form>
-
-    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
 
 {% endblock %}

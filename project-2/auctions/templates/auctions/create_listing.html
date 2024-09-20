@@ -1,7 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<h2 class="text-5xl font-bold text-sky-900 text-center">
+<h2 class="text-5xl font-bold text-black text-center">
     Create a Listing
 </h2>
 
@@ -19,10 +19,10 @@
     </div>
     <!-- Category Field -->
     <div class="mb-3">
-        <label for="countries" class="block mb-2 text-m font-medium text-gray-900">
+        <label class="block mb-2 text-m font-medium text-gray-900">
             Select Category
         </label>
-        <select id="countries" name="category" required
+        <select name="category" required
             class="bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             {% for category in categories %}
             <option value="{{ category.id }}">{{ category.name }}</option>

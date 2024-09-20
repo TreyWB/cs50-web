@@ -4,7 +4,7 @@
 
 <!-- Listing Title -->
 <div class="listing-info">
-    <h2 class="text-5xl font-bold text-sky-900 text-center">{{ listing.title }}</h2>
+    <h2 class="text-5xl font-bold text-black text-center">{{ listing.title }}</h2>
 
     <p class="text-center">In
         <span class="italic">
@@ -43,8 +43,14 @@
     <!-- Winner -->
     <div class="mb-4 pt-0"></div>
     {% if not listing.is_active %}
-    <h1 class="text-center mb-4 text-xl font-bold leading-5 tracking-tight text-gray-700">Winner: <mark
-            class="px-3 ml-2 text-white bg-blue-600 rounded">{{ winner.user }}</mark></h1>
+
+        {% if winner.user is not None %}
+        <h1 class="text-center mb-4 text-xl font-bold leading-5 tracking-tight text-gray-700">Winner: <mark
+                class="px-3 ml-2 text-white bg-blue-600 rounded">{{ winner.user }}</mark></h1>
+        {% else %}
+        <h1 class="text-center mb-4 text-xl font-bold leading-5 tracking-tight text-gray-700">Winner: <mark
+            class="px-3 ml-2 text-white bg-blue-600 rounded">None</mark></h1>
+        {% endif %}
     {% endif %}
 </div>
 
