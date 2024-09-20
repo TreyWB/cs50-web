@@ -1,7 +1,15 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>ERROR</h2>
+    <h2 class="text-5xl font-bold text-red-800 text-center">
+        ERROR
+    </h2>
 
-    <p>{{ message }}</p>
+    <hr>
+
+    <div class="mt-10 text-center">
+        <h4 class="text-gray-600">
+            {{ message }}
+        </h4>
+    </div>
 {% endblock %}

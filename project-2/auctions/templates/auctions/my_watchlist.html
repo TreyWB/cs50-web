@@ -1,17 +1,49 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Saved Listings</h2>
+    <h2 class="text-5xl font-bold text-sky-900 text-center">
+        Saved Listings
+    </h2>
 
+    <hr>
+
+    {% if listings %}
     {% for listing in listings %}
-        <div class="listing">
-            <a href="{% url 'listing' listing.id %}"><h3>{{ listing.title }}</h3></a>
-
-            {% if listing.photo_url %}
-            <img src="{{ listing.photo_url }}">
-            {% endif %}
-
+    <div class="listing border-gray-400 border rounded-lg shadow-md p-4 mb-4">
+        <a href="{% url 'listing' listing.id %}">
+            <h3>{{ listing.title }}</h3>
+        </a>
+        {% if listing.photo_url %}
+        <img src="{{ listing.photo_url }}" class="w-28 h-auto mb-2">
+        {% endif %}
+        <p>{{ listing.description }}</p>
+        <span class="flex justify-between">
+            <!-- Price -->
             <p>${{ listing.get_current_bid|floatformat:2 }}</p>
-        </div>
+
+            <!-- Watchlist Remove Button -->
+            <form action="{% url 'my_watchlist_removed' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="listing_id" value="{{ listing.id }}">
+                <button type="submit"
+                    class="focus:outline-none rounded-lg text-sm p-0 text-center inline-flex items-center me-2 text-gray-600 font-semibold hover:border hover:rounded-lg hover:bg-gray-300 focus:ring-0">
+                    <svg class="w-7 h-7 text-blue-500 fill-blue-500" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m17 21-5-4-5 4V3.889a.92.92 0 0 1 .244-.629.808.808 0 0 1 .59-.26h8.333a.81.81 0 0 1 .589.26.92.92 0 0 1 .244.63V21Z" />
+                    </svg>
+                    {{ listing.watchlist_count }}
+                </button>
+            </form>
+        </span>
+    </div>
     {% endfor %}
+    {% else %}
+    <div class="mt-10 text-center">
+        <h4 class="text-gray-600">You have no saved listings.</h4>
+    </div>
+    {% endif %}
+
+
+
 {% endblock %}

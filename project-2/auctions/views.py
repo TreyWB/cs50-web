@@ -1,7 +1,7 @@
 from django.urls import reverse
 from django.shortcuts import render
 from django.db import IntegrityError
-from django.db.models import Max, Count
+from django.db.models import Max, Count, ExpressionWrapper, Q, BooleanField
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
@@ -159,6 +159,24 @@ def watchlist_removed(request):
 
     Watchlist.objects.filter(listing_id=listing_id, user_id=user_id).delete()
     return HttpResponseRedirect(reverse("listing", args=[listing_id]))
+
+
+def my_watchlist_removed(request):
+    if not request.user.is_authenticated or request.method != "POST":
+        return render(request, "auctions/error.html", {
+            "message": "You must be logged in to remove a listing from your watchlist."
+        })
+
+    listing_id = request.POST.get("listing_id")
+    user_id = request.user.id
+
+    if not listing_id or not user_id:
+        return render(request, "auctions/error.html", {
+            "message": "Invalid request: listing_id or user_id is missing."
+        })
+
+    Watchlist.objects.filter(listing_id=listing_id, user_id=user_id).delete()
+    return HttpResponseRedirect(reverse("my_watchlist"))
 
 
 def new_bid(request):
@@ -339,6 +357,14 @@ def my_watchlist(request):
         watchlist = Watchlist.objects.filter(user_id=request.user.id)
         listings = Listings.objects.filter(id__in=watchlist.values_list('listing_id', flat=True))
 
+        # Probably just remove this its dumb
+        listings = listings.annotate(
+            is_watched=ExpressionWrapper(
+                Q(id__in=watchlist.values_list('listing_id', flat=True)),
+                output_field=BooleanField()
+            )
+        )
+
         return render(request, "auctions/my_watchlist.html", {
             "watchlist": watchlist,
             "listings": listings
@@ -350,7 +376,6 @@ def my_watchlist(request):
 
 
 def categories(request):
-    # categories = Categories.objects.all()
     categories = Categories.objects.annotate(number_of_listings=Count('listings'))
 
     return render(request, "auctions/categories.html", {

@@ -33,7 +33,7 @@
         <h3>{{ listing.title }}</h3>
     </a>
     {% if listing.photo_url %}
-    <img src="{{ listing.photo_url }}" class="w-28 h-auto">
+    <img src="{{ listing.photo_url }}" class="w-28 h-auto mb-2">
     {% endif %}
     <p>{{ listing.description }}</p>
     <p>${{ listing.get_current_bid|floatformat:2 }}</p>
