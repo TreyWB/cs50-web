@@ -12,11 +12,15 @@
     <hr>
 
     <div id="emails-view">
+        <div class="bg-blue-500 text-white p-4 cursor-pointer" onclick="window.location.href='https://example.com'">
+            This whole div is clickable!
+        </div>
     </div>
 
     <div id="compose-view">
-        <h3>New Email</h3>
+        <h3 id="heading"></h3>
         <form id="compose-form">
+            <div id="my-email" style="display: none;">{{ request.user.email }}</div>
             <div class="form-group">
                 From: <input disabled class="form-control" value="{{ request.user.email }}">
             </div>
@@ -29,6 +33,9 @@
             <textarea class="form-control" id="compose-body" placeholder="Body"></textarea>
             <input type="submit" class="btn btn-primary"/>
         </form>
+    </div>
+
+    <div id="message-view">
     </div>
 {% endblock %}
 
