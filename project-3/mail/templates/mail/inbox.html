@@ -2,19 +2,10 @@
 {% load static %}
 
 {% block body %}
-    <h2>{{ request.user.email }}</h2>
-
-    <button class="btn btn-sm btn-outline-primary" id="inbox">Inbox</button>
-    <button class="btn btn-sm btn-outline-primary" id="compose">Compose</button>
-    <button class="btn btn-sm btn-outline-primary" id="sent">Sent</button>
-    <button class="btn btn-sm btn-outline-primary" id="archived">Archived</button>
-    <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
+    <h2 id="body-header"></h2>
     <hr>
 
     <div id="emails-view">
-        <div class="bg-blue-500 text-white p-4 cursor-pointer" onclick="window.location.href='https://example.com'">
-            This whole div is clickable!
-        </div>
     </div>
 
     <div id="compose-view">

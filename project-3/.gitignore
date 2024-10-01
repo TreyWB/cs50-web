@@ -1,1 +1,49 @@
 db.sqlite3
+
+# Python bytecode
+**/__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Django migrations (optional)
+mail/migrations/
+
+# Node.js dependencies
+theme/static_src/node_modules/
+
+# Compiled static assets
+mail/static/
+theme/static/css/dist/
+theme/static/
+
+# npm debug log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Django static files
+staticfiles/
+static/
+media/
+
+# Ignore node_modules
+/mail/theme/static_src/node_modules/
+
+# Ignore built CSS (dist folder)
+/mail/theme/static/css/dist/
+
+# Ignore Python bytecode
+/mail/theme/__pycache__/
+
+# Ignore npm debug log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Don't ignore configuration files or important sources
+!/mail/theme/tailwind.config.js
+!/mail/theme/package.json
+!/mail/theme/package-lock.json
+!/mail/theme/postcss.config.js
+!/mail/theme/src/

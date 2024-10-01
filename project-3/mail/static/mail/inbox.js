@@ -12,15 +12,19 @@ document.addEventListener("DOMContentLoaded", function () {
   load_mailbox("inbox");
 });
 
+
 function compose_email() {
   // Show compose view and hide other views
   document.querySelector("#emails-view").style.display = "none";
   document.querySelector("#message-view").style.display = "none";
   document.querySelector("#compose-view").style.display = "block";
 
-  const heading_div = document.querySelector("#heading")
+  const heading_div = document.querySelector("#body-header")
   heading_div.innerHTML = "";
   heading_div.innerHTML = "New Email";
+
+  // const heading_rule = document.createElement("hr");
+  // heading_div.appendChild(heading_rule);
 
   // Clear out composition fields
   document.querySelector("#compose-recipients").value = "";
@@ -29,16 +33,21 @@ function compose_email() {
 }
 
 
-function load_mailbox(mailbox) {  
+function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
   document.querySelector("#emails-view").style.display = "block";
   document.querySelector("#message-view").style.display = "none";
   document.querySelector("#compose-view").style.display = "none";
 
   // Show the mailbox name
-  document.querySelector("#emails-view").innerHTML = `<h3>${
+  const heading_div = document.querySelector("#body-header")
+  heading_div.innerHTML = "";
+  heading_div.innerHTML = `${
     mailbox.charAt(0).toUpperCase() + mailbox.slice(1)
-  }</h3>`;
+  }`;
+
+  // Clear cards before adding new ones
+  document.querySelector("#emails-view").innerHTML = "";
 
   // Load emails via API
   fetch(`emails/${mailbox}`)
@@ -54,16 +63,17 @@ function load_mailbox(mailbox) {
           view_email(email.id);
         };
         email_div.innerHTML = `
-          <hr>
           <div class="email-header">
-            <div class="email-sender">${email.sender}</div>
-            <div class="email-timestamp">${email.timestamp}</div>
-            <div class="email-subject">${email.subject}</div>
+          <div class="email-sender">${email.sender}</div>
+          <div class="email-timestamp">${email.timestamp}</div>
+          <div class="email-subject">${email.subject}</div>
+          <hr>
           </div>`;
         document.querySelector("#emails-view").appendChild(email_div);
       });
     });
 }
+
 
 function view_email(email_id) {
   // Hide everything except message view
@@ -218,6 +228,7 @@ function view_email(email_id) {
   });
 }
 
+
 function reply_email(email_id) {
   // Display only compose view
   document.querySelector("#emails-view").style.display = "none";
@@ -252,6 +263,7 @@ function reply_email(email_id) {
       body_field.value = body_data;
     });
 }
+
 
 function send_email(event) {
   event.preventDefault();
