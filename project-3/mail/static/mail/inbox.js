@@ -385,7 +385,7 @@ function view_email(email_id) {
             "duration-200", 
             "whitespace-nowrap"
           );
-          unarchive_tooltip.innerText = "Unarchive";
+          unarchive_tooltip.innerText = "Remove from Archive";
 
           unarchive_button_container.onmouseenter = () => {
             unarchive_tooltip.classList.remove("invisible", "opacity-0");
@@ -514,7 +514,7 @@ function reply_email(email_id) {
   document.querySelector("#compose-view").style.display = "block";
 
   // Change heading
-  const heading_div = document.querySelector("#heading")
+  const heading_div = document.querySelector("#body-header")
   heading_div.innerHTML = "";
   heading_div.innerHTML = "Reply";
 
