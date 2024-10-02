@@ -2,30 +2,17 @@
 {% load static %}
 
 {% block body %}
-    <h2 id="body-header"></h2>
-    <hr>
+    <div id="page-header" class="mx-0 px-2">
+        <h2 id="body-header" class="text-2xl font-semibold text-gray-700"></h2>
+        <hr>
+    </div>
 
     <div id="emails-view">
     </div>
 
     <div id="compose-view">
         <h3 id="heading"></h3>
-        <!-- <form id="compose-form">
-            <div id="my-email" style="display: none;">{{ request.user.email }}</div>
-            <div class="">
-                From: <input disabled value="{{ request.user.email }}">
-            </div>
-            <div class="">
-                <input id="compose-recipients" placeholder="Recipients" class="form-control">
-            </div>
-            <div class="">
-                <input id="compose-subject" placeholder="Subject" class="form-control">
-            </div>
-            <textarea id="compose-body" placeholder="Body" class=""></textarea>
-            <input type="submit" class="btn btn-primary"/>
-        </form> -->
-        
-        <form id="compose-form" class="max-w-3xl mx-auto m-5">
+        <form id="compose-form" class="max-w-3xl mx-auto m-5 px-2">
             <div id="my-email" class="hidden">{{ request.user.email }}</div>
             <div class="relative z-0 w-full mb-8 group">
                 <input disabled id="floating_email" class="block py-2.5 px-0 w-full text-base text-gray-500 bg-transparent border-0 border-b-2 border-gray-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="{{ request.user.email }}"/>
@@ -46,21 +33,17 @@
                 </label>
             </div>
             <div class="w-full rounded-lg bg-white border-gray-600 text-gray-700">
-                <div class="px-0 py-0 rounded-t-lg pb-2 bg-white h-[calc(60vh-30px)]">
+                <div class="px-0 py-0 rounded-t-lg pb-2 border-b-2 border-gray-500 focus-within:border-blue-600 bg-white h-[calc(60vh-30px)]">
                     <textarea required id="compose-body" placeholder="Body..." class="w-full h-full px-0 text-base text-gray-700 border-0 bg-white focus:ring-0"></textarea>
                 </div>
-                <div class="items-center justify-between py-3 border-t-2 border-gray-500">
+                <div class="items-center justify-between py-3">
                     <button type="submit" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-0 focus:ring-blue-200 hover:bg-blue-800">
                         Send
                     </button>
                 </div>
             </div>
         </form>
-    
-
-            
     </div>
-
 
     <div id="message-view">
     </div>

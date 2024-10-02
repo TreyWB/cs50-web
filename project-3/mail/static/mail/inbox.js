@@ -62,13 +62,41 @@ function load_mailbox(mailbox) {
         email_div.onclick = () => {
           view_email(email.id);
         };
-        email_div.innerHTML = `
-          <div class="email-header">
-          <div class="email-sender">${email.sender}</div>
-          <div class="email-timestamp">${email.timestamp}</div>
-          <div class="email-subject">${email.subject}</div>
-          <hr>
-          </div>`;
+
+        if (!email.read && mailbox !== "sent") {
+          email_div.innerHTML = `
+          <div class="m-0 pt-1 px-2 hover:shadow-md hover:rounded-md hover:border hover:cursor-pointer">
+            <span class="flex justify-between items-center">
+              <div class="text-lg font-semibold text-gray-700">${email.sender}</div>
+              <div class="text-sm text-gray-500">${email.timestamp}</div>
+            </span>
+            <div class="mt-2">${email.subject}</div>
+            <hr class="mt-2">
+            </div>
+        `;
+        } else if (email.read && mailbox !== "sent") {
+          email_div.innerHTML = `
+          <div class="m-0 pt-1 px-2 hover:shadow-md hover:rounded-md hover:border bg-gray-100 rounded-lg hover:cursor-pointer">
+            <span class="flex justify-between items-center">
+              <div class="text-lg font-semibold text-gray-700">${email.sender}</div>
+              <div class="text-sm text-gray-500">${email.timestamp}</div>
+            </span>
+            <div class="mt-2">${email.subject}</div>
+            <hr class="mt-2">
+            </div>
+        `;
+        } else {
+          email_div.innerHTML = `
+          <div class="m-0 pt-1 px-2 hover:shadow-md hover:rounded-md hover:border hover:cursor-pointer">
+            <span class="flex justify-between items-center">
+              <div class="text-lg font-semibold text-gray-700">${email.sender}</div>
+              <div class="text-sm text-gray-500">${email.timestamp}</div>
+            </span>
+            <div class="mt-2">${email.subject}</div>
+            <hr class="mt-2">
+            </div>
+        `;
+        }
         document.querySelector("#emails-view").appendChild(email_div);
       });
     });
